@@ -215,6 +215,10 @@ if [ -z "$nodeps" ]; then
 		create_entry_header
 		cat >>"$entry" <<__EOF__
 cd "\$HOME/in/srpm"
+packager=\$(rpmquery -p --qf '%{PACKAGER}' *)
+cat >>"\$HOME/.rpmmacros" <<EOF
+%packager \$packager
+EOF
 ${rpmi:-$def_rpmi} -i -- *
 cd \`rpm --eval %_specdir\`
 sed '/^buildrequires(pre):[[:space:]]*/I!d;s///' *.spec |
